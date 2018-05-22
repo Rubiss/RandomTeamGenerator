@@ -11,54 +11,66 @@ namespace RandomTeamGenerator
     {
         static void Main(string[] args)
         {
-            List<Match> matches = new List<Match>();
-            List<Player> players = new List<Player>();
+            var retry = "r";
 
-            Console.WriteLine("Enter a number of players:");
-            var inPlayers = Console.ReadLine();
-            Console.WriteLine("Enter number of matches:");
-            var inMatches = Console.ReadLine();
-
-            var numPlayers = int.Parse(inPlayers);
-            var numMatches = int.Parse(inMatches);
-
-
-            for (var x = 1; x <= numPlayers; x++)
+            while (retry == "r")
             {
-                players.Add(new Player { Id = x, GamesPlayed = 0, GamesPlayedAgainst = new int[numPlayers + 1], GamesPlayedWith = new int[numPlayers + 1] });
+
+                List<Match> matches = new List<Match>();
+                List<Player> players = new List<Player>();
+
+                Console.WriteLine("Enter a number of players:");
+                var inPlayers = Console.ReadLine();
+                Console.WriteLine("Enter number of matches:");
+                var inMatches = Console.ReadLine();
+
+                var numPlayers = int.Parse(inPlayers);
+                var numMatches = int.Parse(inMatches);
+
+
+                for (var x = 1; x <= numPlayers; x++)
+                {
+                    players.Add(new Player
+                    {
+                        Id = x,
+                        GamesPlayed = 0,
+                        GamesPlayedAgainst = new int[numPlayers + 1],
+                        GamesPlayedWith = new int[numPlayers + 1]
+                    });
+                }
+
+                while (matches.Count < numMatches)
+                {
+                    var team1 = new List<int>();
+                    var team2 = new List<int>();
+                    var match = new Match();
+                    match.Team1 = team1;
+                    match.Team2 = team2;
+
+                    team1.Add(GetPlayer(1, match, matches, players));
+                    match.Team1 = team1;
+                    team1.Add(GetPlayer(1, match, matches, players));
+                    match.Team1 = team1;
+                    team1.Add(GetPlayer(1, match, matches, players));
+                    match.Team1 = team1;
+                    team2.Add(GetPlayer(2, match, matches, players));
+                    match.Team2 = team2;
+                    team2.Add(GetPlayer(2, match, matches, players));
+                    match.Team2 = team2;
+                    team2.Add(GetPlayer(2, match, matches, players));
+                    match.Team2 = team2;
+
+                    matches.Add(new Match {Team1 = team1, Team2 = team2});
+                }
+
+                foreach (var match in matches)
+                {
+                    Console.WriteLine(match.ToString());
+                }
+
+                Console.WriteLine("Enter 'r' to retry:");
+                retry = Console.ReadLine();
             }
-
-            while (matches.Count < numMatches)
-            {
-                var team1 = new List<int>();
-                var team2 = new List<int>();
-                var match = new Match();
-                match.Team1 = team1;
-                match.Team2 = team2;
-
-                team1.Add(GetPlayer(1, match, matches, players));
-                match.Team1 = team1;
-                team1.Add(GetPlayer(1, match, matches, players));
-                match.Team1 = team1;
-                team1.Add(GetPlayer(1, match, matches, players));
-                match.Team1 = team1;
-                team2.Add(GetPlayer(2, match, matches, players));
-                match.Team2 = team2;
-                team2.Add(GetPlayer(2, match, matches, players));
-                match.Team2 = team2;
-                team2.Add(GetPlayer(2, match, matches, players));
-                match.Team2 = team2;
-
-                matches.Add(new Match { Team1 = team1, Team2 = team2 });
-            }
-
-            foreach (var match in matches)
-            {
-                Console.WriteLine(match.ToString());
-            }
-
-            Console.WriteLine("Press any key to exit:");
-            var exit = Console.ReadLine();
         }
 
         public class Match
@@ -97,7 +109,17 @@ namespace RandomTeamGenerator
                 //We have not assigned a player yet
                 if (match.Team1.Count == 0)
                 {
-                    retPlayer = players.OrderBy(x => x.GamesPlayed).First().Id;
+                    var playerList = players.OrderBy(x => x.GamesPlayed).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed).ToList();
+
+                    var r = rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
                 }
 
                 if (match.Team1.Count == 1)
