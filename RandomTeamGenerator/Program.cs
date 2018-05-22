@@ -9,7 +9,9 @@ namespace RandomTeamGenerator
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static Random Rnd = new Random();
+
+        public static void Main(string[] args)
         {
             var retry = "r";
 
@@ -102,7 +104,32 @@ namespace RandomTeamGenerator
         public static int GetPlayer(int team, Match match, List<Match> matches, List<Player> players)
         {
             var retPlayer = 0;
-            Random rnd = new Random();
+            var r = Rnd.Next(3);
+
+            if (r == 0)
+            {
+                retPlayer = GetPlayerMethod1(team, match, matches, players);
+            }
+
+            if (r == 1)
+            {
+                retPlayer = GetPlayerMethod2(team, match, matches, players);
+            }
+
+            if (r == 2)
+            {
+                retPlayer = GetPlayerMethod3(team, match, matches, players);
+            }
+
+            //Increment a game played
+            players.Find(x => x.Id == retPlayer).GamesPlayed++;
+
+            return retPlayer;
+        }
+
+        public static int GetPlayerMethod1(int team, Match match, List<Match> matches, List<Player> players)
+        {
+            var retPlayer = 0;
 
             if (team == 1)
             {
@@ -117,7 +144,7 @@ namespace RandomTeamGenerator
                         playerList.Where(x => x.GamesPlayed ==
                                               minPlayer.GamesPlayed).ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
                 }
@@ -134,11 +161,11 @@ namespace RandomTeamGenerator
 
                     var playersToRandomize =
                         playerList.Where(x => x.GamesPlayed ==
-                                         minPlayer.GamesPlayed)
-                                  .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
-                                         minPlayer.GamesPlayedWith[match.Team1.First()]).ToList();
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()]).ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
 
@@ -159,13 +186,13 @@ namespace RandomTeamGenerator
 
                     var playersToRandomize =
                         playerList.Where(x => x.GamesPlayed ==
-                                         minPlayer.GamesPlayed)
-                                  .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
-                                         minPlayer.GamesPlayedWith[match.Team1.First()])
-                                  .Where(x => x.GamesPlayedWith[match.Team1.Last()] ==
-                                         minPlayer.GamesPlayedWith[match.Team1.Last()]).ToList();
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.Last()]).ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
 
@@ -193,16 +220,16 @@ namespace RandomTeamGenerator
 
                     var playersToRandomize =
                         playerList.Where(x => x.GamesPlayed ==
-                                        minPlayer.GamesPlayed)
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1.First()])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1[1]])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1.Last()])
-                                  .ToList();
+                            .ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
 
@@ -231,18 +258,18 @@ namespace RandomTeamGenerator
 
                     var playersToRandomize =
                         playerList.Where(x => x.GamesPlayed ==
-                                         minPlayer.GamesPlayed)
-                                  .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
-                                         minPlayer.GamesPlayedWith[match.Team2.First()])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
-                                         minPlayer.GamesPlayedAgainst[match.Team1.First()])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
-                                         minPlayer.GamesPlayedAgainst[match.Team1[1]])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
-                                         minPlayer.GamesPlayedAgainst[match.Team1.Last()])
-                                  .ToList();
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
 
@@ -275,20 +302,20 @@ namespace RandomTeamGenerator
 
                     var playersToRandomize =
                         playerList.Where(x => x.GamesPlayed ==
-                                         minPlayer.GamesPlayed)
-                                  .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
-                                         minPlayer.GamesPlayedWith[match.Team2.First()])
-                                  .Where(x => x.GamesPlayedWith[match.Team2.Last()] ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team2.Last()] ==
                                         minPlayer.GamesPlayedWith[match.Team2.Last()])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1.First()])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1[1]])
-                                  .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
                                         minPlayer.GamesPlayedAgainst[match.Team1.Last()])
-                                  .ToList();
+                            .ToList();
 
-                    var r = rnd.Next(playersToRandomize.Count);
+                    var r = Rnd.Next(playersToRandomize.Count);
 
                     retPlayer = playersToRandomize[r].Id;
 
@@ -309,8 +336,429 @@ namespace RandomTeamGenerator
                 }
             }
 
-            //Increment a game played
-            players.Find(x => x.Id == retPlayer).GamesPlayed++;
+            return retPlayer;
+        }
+
+        public static int GetPlayerMethod2(int team, Match match, List<Match> matches, List<Player> players)
+        {
+            var retPlayer = 0;
+
+            if (team == 1)
+            {
+                //We have not assigned a player yet
+                if (match.Team1.Count == 0)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+                }
+
+                if (match.Team1.Count == 1)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id))
+                        .ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()]).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the two players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.First()]++;
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedWith[retPlayer]++;
+                }
+
+                if (match.Team1.Count == 2)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.Last()])
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.Last()]).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the three players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.Last()]++;
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedWith[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedWith[retPlayer]++;
+                }
+
+            }
+
+            if (team == 2)
+            {
+                if (match.Team2.Count == 0)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+
+                }
+
+                if (match.Team2.Count == 1)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the two players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.First()]++;
+                    players.Find(x => x.Id == match.Team2.First()).GamesPlayedWith[retPlayer]++;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+                }
+
+                if (match.Team2.Count == 2)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.First()])
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.Last()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team2.Last()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.Last()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the three players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.Last()]++;
+                    players.Find(x => x.Id == match.Team2.First()).GamesPlayedWith[retPlayer]++;
+                    players.Find(x => x.Id == match.Team2.Last()).GamesPlayedWith[retPlayer]++;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+                }
+            }
+
+            return retPlayer;
+        }
+
+        public static int GetPlayerMethod3(int team, Match match, List<Match> matches, List<Player> players)
+        {
+            var retPlayer = 0;
+
+            if (team == 1)
+            {
+                //We have not assigned a player yet
+                if (match.Team1.Count == 0)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+                }
+
+                if (match.Team1.Count == 1)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id))
+                        .ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()]).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the two players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.First()]++;
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedWith[retPlayer]++;
+                }
+
+                if (match.Team1.Count == 2)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.First()])
+                        .ThenBy(x => x.GamesPlayedWith[match.Team1.Last()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedWith[match.Team1.Last()]).ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the three players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team1.Last()]++;
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedWith[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedWith[retPlayer]++;
+                }
+
+            }
+
+            if (team == 2)
+            {
+                if (match.Team2.Count == 0)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+
+                }
+
+                if (match.Team2.Count == 1)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the two players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.First()]++;
+                    players.Find(x => x.Id == match.Team2.First()).GamesPlayedWith[retPlayer]++;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+                }
+
+                if (match.Team2.Count == 2)
+                {
+                    var playerList = players.OrderBy(x => x.GamesPlayed)
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.Last()])
+                        .ThenBy(x => x.GamesPlayedWith[match.Team2.First()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.Last()])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1[1]])
+                        .ThenBy(x => x.GamesPlayedAgainst[match.Team1.First()])
+                        .Where(x => !match.Team1.Contains(x.Id))
+                        .Where(x => !match.Team2.Contains(x.Id)).ToList();
+
+                    var minPlayer = playerList.First();
+
+                    var playersToRandomize =
+                        playerList.Where(x => x.GamesPlayed ==
+                                              minPlayer.GamesPlayed)
+                            .Where(x => x.GamesPlayedWith[match.Team2.First()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.First()])
+                            .Where(x => x.GamesPlayedWith[match.Team2.Last()] ==
+                                        minPlayer.GamesPlayedWith[match.Team2.Last()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.First()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.First()])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1[1]] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1[1]])
+                            .Where(x => x.GamesPlayedAgainst[match.Team1.Last()] ==
+                                        minPlayer.GamesPlayedAgainst[match.Team1.Last()])
+                            .ToList();
+
+                    var r = Rnd.Next(playersToRandomize.Count);
+
+                    retPlayer = playersToRandomize[r].Id;
+
+                    //Increment played with for the three players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedWith[match.Team2.Last()]++;
+                    players.Find(x => x.Id == match.Team2.First()).GamesPlayedWith[retPlayer]++;
+                    players.Find(x => x.Id == match.Team2.Last()).GamesPlayedWith[retPlayer]++;
+
+                    //Increment played against for the players that just got paired
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.First()]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1[1]]++;
+                    players.Find(x => x.Id == retPlayer).GamesPlayedAgainst[match.Team1.Last()]++;
+
+                    players.Find(x => x.Id == match.Team1.First()).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1[1]).GamesPlayedAgainst[retPlayer]++;
+                    players.Find(x => x.Id == match.Team1.Last()).GamesPlayedAgainst[retPlayer]++;
+                }
+            }
 
             return retPlayer;
         }
