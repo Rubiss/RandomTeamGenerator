@@ -13,23 +13,22 @@ namespace RandomTeamGenerator
 
         public static void Main(string[] args)
         {
+            Console.WriteLine("Enter a number of players:");
+            var inPlayers = Console.ReadLine();
+            Console.WriteLine("Enter number of matches:");
+            var inMatches = Console.ReadLine();
+            Console.WriteLine("Enter a number of players per team");
+            var inPlayersPerTeam = Console.ReadLine();
+
+            var numPlayers = int.Parse(inPlayers);
+            var numMatches = int.Parse(inMatches);
+            var numPlayersPerTeam = int.Parse(inPlayersPerTeam);
+
             var retry = "r";
 
             while (retry == "r")
             {
-
-                List<Match> matches = new List<Match>();
-                List<Player> players = new List<Player>();
-
-                Console.WriteLine("Enter a number of players:");
-                var inPlayers = Console.ReadLine();
-                Console.WriteLine("Enter number of matches:");
-                var inMatches = Console.ReadLine();
-
-                var numPlayers = int.Parse(inPlayers);
-                var numMatches = int.Parse(inMatches);
-
-
+                var players = new List<Player>();
                 for (var x = 1; x <= numPlayers; x++)
                 {
                     players.Add(new Player
@@ -41,33 +40,43 @@ namespace RandomTeamGenerator
                     });
                 }
 
+                var matches = new List<Match>();
                 while (matches.Count < numMatches)
                 {
                     var team1 = new List<int>();
                     var team2 = new List<int>();
-                    var match = new Match();
-                    match.Team1 = team1;
-                    match.Team2 = team2;
+                    var match = new Match
+                    {
+                        Team1 = team1,
+                        Team2 = team2
+                    };
 
                     team1.Add(GetPlayer(1, match, matches, players));
                     match.Team1 = team1;
                     team1.Add(GetPlayer(1, match, matches, players));
                     match.Team1 = team1;
-                    team1.Add(GetPlayer(1, match, matches, players));
-                    match.Team1 = team1;
-                    team2.Add(GetPlayer(2, match, matches, players));
-                    match.Team2 = team2;
-                    team2.Add(GetPlayer(2, match, matches, players));
-                    match.Team2 = team2;
-                    team2.Add(GetPlayer(2, match, matches, players));
-                    match.Team2 = team2;
+                    if (numPlayersPerTeam == 3)
+                    {
+                        team1.Add(GetPlayer(1, match, matches, players));
+                        match.Team1 = team1;
+                    }
 
-                    matches.Add(new Match {Team1 = team1, Team2 = team2});
+                    team2.Add(GetPlayer(2, match, matches, players));
+                    match.Team2 = team2;
+                    team2.Add(GetPlayer(2, match, matches, players));
+                    match.Team2 = team2;
+                    if (numPlayersPerTeam == 3)
+                    {
+                        team2.Add(GetPlayer(2, match, matches, players));
+                        match.Team2 = team2;
+                    }
+
+                    matches.Add(new Match { Team1 = team1, Team2 = team2 });
                 }
 
                 foreach (var match in matches)
                 {
-                    Console.WriteLine(match.ToString());
+                    Console.WriteLine(match.ToString(numPlayersPerTeam));
                 }
 
                 Console.WriteLine("Enter 'r' to retry:");
@@ -80,12 +89,21 @@ namespace RandomTeamGenerator
             public List<int> Team1 { get; set; }
             public List<int> Team2 { get; set; }
 
-            public override string ToString()
+            public string ToString(int numPlayers)
             {
                 var result = "";
 
-                result = result + Team1.First() + "," + Team1[1] + "," + Team1.Last() +
-                         ",v," + Team2.First() + "," + Team2[1] + "," + Team2.Last();
+                if (numPlayers == 3)
+                {
+                    result = result + Team1.First() + "," + Team1[1] + "," + Team1.Last() +
+                             ",v," + Team2.First() + "," + Team2[1] + "," + Team2.Last();
+                }
+
+                if (numPlayers == 2)
+                {
+                    result = result + Team1.First() + "," + Team1.Last() +
+                             ",v," + Team2.First() + "," + Team2.Last();
+                }
 
                 return result;
             }
