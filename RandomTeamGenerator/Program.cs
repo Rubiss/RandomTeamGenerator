@@ -13,16 +13,52 @@ namespace RandomTeamGenerator
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Enter a number of players:");
-            var inPlayers = Console.ReadLine();
-            Console.WriteLine("Enter number of matches:");
-            var inMatches = Console.ReadLine();
-            Console.WriteLine("Enter a number of players per team");
-            var inPlayersPerTeam = Console.ReadLine();
+            var isValid = false;
 
-            var numPlayers = int.Parse(inPlayers);
-            var numMatches = int.Parse(inMatches);
-            var numPlayersPerTeam = int.Parse(inPlayersPerTeam);
+            var numPlayers = 0;
+            while (!isValid)
+            {
+                Console.WriteLine("Enter a number of players:");
+                var inPlayers = Console.ReadLine();
+
+                if (inPlayers != null)
+                {
+                    isValid = int.TryParse(inPlayers, out numPlayers);
+                }
+
+            }
+
+            isValid = false;
+
+            var numMatches = 0;
+            while (!isValid)
+            {
+                Console.WriteLine("Enter number of matches:");
+                var inMatches = Console.ReadLine();
+
+                if (inMatches != null)
+                {
+                    isValid = int.TryParse(inMatches, out numMatches);
+                }
+            }
+
+            isValid = false;
+
+            var numPlayersPerTeam = 0;
+            while (!isValid)
+            {
+                var canParse = false;
+                Console.WriteLine("Enter a number of players per team (2 or 3):");
+                var inPlayersPerTeam = Console.ReadLine();
+                if (inPlayersPerTeam != null)
+                    canParse = int.TryParse(inPlayersPerTeam, out numPlayersPerTeam);
+
+                if (canParse && (numPlayersPerTeam == 3 || numPlayersPerTeam == 2))
+                {
+                    isValid = true;
+                }
+            }
+            
 
             var retry = "r";
 
